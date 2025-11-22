@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#047857" />
+    <meta name="description" content="Trò chuyện cùng Ông Lão Tiên Nhân - Ứng dụng AI đậm chất dân gian Việt Nam" />
+    
+    <!-- PWA Settings -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Tiên Nhân" />
+
+    <title>Ông Lão Tiên Nhân</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Noto+Sans+VN:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Noto Sans VN', sans-serif;
+        background-color: #f0f4f8; 
+        overscroll-behavior-y: none; /* Prevent pull-to-refresh on mobile app */
+      }
+      h1, h2, h3, .font-serif {
+        font-family: 'Merriweather', serif;
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Animation Definitions */
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+      }
+      @keyframes drift {
+        0% { transform: translateX(0) opacity(0.8); }
+        50% { opacity: 0.4; }
+        100% { transform: translateX(50px) opacity(0.8); }
+      }
+      @keyframes mist {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      
+      /* 3D Breathing / Meditating Animation */
+      @keyframes meditate-3d {
+        0% { transform: translateY(0px) scale(1); }
+        50% { transform: translateY(-8px) scale(1.02); } 
+        100% { transform: translateY(0px) scale(1); }
+      }
+
+      /* 3D Thinking Animation - Bobbing head */
+      @keyframes think-3d {
+        0%, 100% { transform: rotateZ(0deg) translateY(0); }
+        25% { transform: rotateZ(-2deg) translateY(-2px); }
+        75% { transform: rotateZ(2deg) translateY(2px); }
+      }
+
+      /* 3D Angry Shake */
+      @keyframes shake-3d {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-3px) rotateZ(-2deg); }
+        75% { transform: translateX(3px) rotateZ(2deg); }
+      }
+
+      /* Typing Dots Bounce */
+      @keyframes typing-bounce {
+        0%, 60%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-6px); }
+      }
+
+      /* Fan Waving */
+      @keyframes fan-wave {
+        0%, 100% { transform: rotate(-5deg); }
+        50% { transform: rotate(10deg); }
+      }
+
+      /* Beard Flowing - Improved for Swaying */
+      @keyframes beard-flow {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(2deg); }
+        50% { transform: rotate(0deg); }
+        75% { transform: rotate(-2deg); }
+        100% { transform: rotate(0deg); }
+      }
+
+      /* Staff Swaying */
+      @keyframes staff-sway {
+        0%, 100% { transform: rotate(-8deg); }
+        50% { transform: rotate(-14deg); }
+      }
+
+      /* Hand Stroking Beard */
+      @keyframes stroke-beard {
+        0%, 100% { transform: translate(-25px, -25px) rotate(-10deg); }
+        50% { transform: translate(-25px, -15px) rotate(-10deg); }
+      }
+      
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+      .animate-float-delayed {
+        animation: float 8s ease-in-out infinite;
+        animation-delay: 2s;
+      }
+      .animate-meditate-3d {
+        animation: meditate-3d 5s ease-in-out infinite;
+      }
+      .animate-think-3d {
+        animation: think-3d 3s ease-in-out infinite;
+      }
+      .animate-shake-3d {
+        animation: shake-3d 0.3s linear infinite;
+      }
+      .animate-typing-dot {
+        animation: typing-bounce 1.4s infinite ease-in-out both;
+      }
+      .animate-fan {
+        animation: fan-wave 3s ease-in-out infinite;
+        transform-origin: center center;
+      }
+      .animate-beard {
+        animation: beard-flow 4s ease-in-out infinite;
+        transform-origin: center top;
+        transform-box: fill-box; /* Ensures transform origin is relative to the element */
+      }
+      .animate-staff {
+        animation: staff-sway 6s ease-in-out infinite;
+        transform-origin: 0px 0px; /* Pivot around the hand */
+      }
+      .animate-stroke-beard {
+        animation: stroke-beard 2.5s ease-in-out infinite;
+      }
+      
+      .mist-bg {
+        background: linear-gradient(-45deg, #e0f2fe, #f0f9ff, #ecfccb, #f0fdf4);
+        background-size: 400% 400%;
+        animation: mist 15s ease infinite;
+      }
+
+      /* Perspective Container for 3D effect */
+      .perspective-container {
+        perspective: 800px;
+      }
+      .preserve-3d {
+        transform-style: preserve-3d;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "vite": "https://aistudiocdn.com/vite@^7.2.4",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="text-slate-800 antialiased h-screen flex flex-col overflow-hidden select-none">
+    <div id="root" class="h-full flex flex-col"></div>
+    <script type="module" src="/index.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('Tiên Nhân PWA registered successfully:', registration.scope);
+            })
+            .catch((error) => {
+              console.log('PWA registration failed:', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

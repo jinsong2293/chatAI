@@ -1,0 +1,49 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Install Capacitor
+        run: npm install @capacitor/core @capacitor/cli @capacitor/android
+
+      - name: Init Capacitor
+        run: npx cap init "Tien Nhan Chat" "com.tiennhan.chat"
+
+      - name: Add Android
+        run: npx cap add android
+
+      - name: Update config
+        run: sed -i 's/webDir: '\''www'\''/webDir: '\''dist'\''/' capacitor.config.ts
+
+      - name: Sync
+        run: npx cap sync android
+
+      - name: Build APK
+        uses: mobiledevops/android-sdk-image-action@v1
+        with:
+          command: npx cap build android --release
+          working-directory: .
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: android/app/build/outputs/apk/release/app-release.apk
