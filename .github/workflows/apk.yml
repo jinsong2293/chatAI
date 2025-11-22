@@ -31,7 +31,8 @@ jobs:
         run: npx cap add android
 
       - name: Update config
-        run: sed -i 's/webDir: '\''www'\''/webDir: '\''dist'\''/' capacitor.config.ts
+        run: sed -i "s/webDir: 'www'/webDir: 'dist'/" capacitor.config.ts
+
 
       - name: Sync
         run: npx cap sync android
